@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML File Upload and Display</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #00FF00; /* Bright green text */
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            transition: color 0.3s;
+        }
+        input[type="file"], button {
+            background-color: #1E1E1E; /* Darker button background */
+            color: #00FF00; /* Green text */
+            border: 2px solid #00FF00; /* Green border */
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        input[type="file"]:hover, button:hover {
+            background-color: #00FF00; /* Green background on hover */
+            color: #121212; /* Dark text on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #00FF00; /* Green border */
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        #fullscreenButton {
+            margin-top: 10px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<h1 id="title">Upload and Display HTML File</h1>
+<div class="button-container">
+    <input type="file" id="fileInput" accept=".html">
+    <button id="uploadButton">Upload</button>
+    <button id="fullscreenButton">Fullscreen</button>
+</div>
+
+<iframe id="outputFrame"></iframe>
+
+<script>
+    // Function to randomly change letters in the title
+    function randomizeTitle() {
+        const titleElement = document.getElementById('title');
+        const originalText = titleElement.textContent;
+        const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        
+        let interval = setInterval(() => {
+            let randomizedText = '';
+            for (let char of originalText) {
+                randomizedText += Math.random() < 0.5 ? randomChars.charAt(Math.floor(Math.random() * randomChars.length)) : char;
+            }
+            titleElement.textContent = randomizedText;
+        }, 100); // Change every 100ms
+
+        // Randomly stop the effect and revert to original text
+        const randomTime = [2000, 3000, 5000][Math.floor(Math.random() * 3)]; // Randomly choose between 2s, 3s, and 5s
+        setTimeout(() => {
+            clearInterval(interval);
+            titleElement.textContent = originalText;
+        }, randomTime);
+    }
+
+    // Call the randomizeTitle function on page load
+    window.onload = randomizeTitle;
+
+    document.getElementById('uploadButton').addEventListener('click', function() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const iframe = document.getElementById('outputFrame');
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                doc.open();
+                doc.write(e.target.result);
+                doc.close();
+            };
+            reader.readAsText(file);
+        } else {
+            alert('Please select an HTML file to upload.');
+        }
+    });
+
+    document.getElementById('fullscreenButton').addEventListener('click', function() {
+        const iframe = document.getElementById('outputFrame');
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.mozRequestFullScreen) { // Firefox
+            iframe.mozRequestFullScreen();
+        } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari and Opera iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) { // IE/Edge
+            iframe.msRequestFullscreen();
+        }
+    });
+</script>
+
+</body>
+</html>
