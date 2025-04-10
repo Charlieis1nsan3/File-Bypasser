@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML File Upload and Display</title>
+    <title>File Bypasser</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -64,7 +64,7 @@
 <iframe id="outputFrame"></iframe>
 
 <script>
-    // Function to randomly change letters in the title
+
     function randomizeTitle() {
         const titleElement = document.getElementById('title');
         const originalText = titleElement.textContent;
@@ -76,10 +76,10 @@
                 randomizedText += Math.random() < 0.5 ? randomChars.charAt(Math.floor(Math.random() * randomChars.length)) : char;
             }
             titleElement.textContent = randomizedText;
-        }, 100); // Change every 100ms
+        }, 100);
 
-        // Randomly stop the effect and revert to original text
-        const randomTime = [2000, 3000, 5000][Math.floor(Math.random() * 3)]; // Randomly choose between 2s, 3s, and 5s
+
+        const randomTime = [2000, 3000, 5000][Math.floor(Math.random() * 3)];
         setTimeout(() => {
             clearInterval(interval);
             titleElement.textContent = originalText;
